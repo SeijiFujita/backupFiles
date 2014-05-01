@@ -1,0 +1,10 @@
+BoldAsFont=no
+Transparency=medium
+Font=Inconsolata
+FontHeight=12
+Locale=ja_JP
+Charset=UTF-8
+Columns=100
+Rows=30
+BackgroundColour=0,0,0
+ForegroundColour=192,192,192

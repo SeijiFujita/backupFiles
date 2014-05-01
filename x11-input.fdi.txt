@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<deviceinfo version="0.2">
+  <device>
+    <match key="info.capabilities" contains="input.keyboard">
+      <merge key="input.x11_options.XkbModel" type="string">jp106</merge>
+      <merge key="input.x11_options.XkbLayout" type="string">jp106</merge>
+      <merge key="input.x11_options.XkbOptions" type="string">ctrl:swapcaps</merge>
+    </match>
+  </device>
+</deviceinfo>
