@@ -12,11 +12,25 @@
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 ;;
+;; -- http://dev.ariel-networks.com/articles/emacs/part1/
+(add-to-list 'load-path "~/.emacs.d/elisp")
+(require 'install-elisp)
+(setq install-elisp-repository-directory "~/.emacs.d/elisp") 
 ;;
+;; current-string-to
+(require 'current-string-to)
+(global-set-key "\C-t" 'current-string-to-copy)
+;;
+;; grep-edit 
+;;(require 'grep-edit) 
+;;
+;; language
 (set-language-environment "Japanese")
 (set-default-coding-systems 'utf-8)
 ;; for windows
 (setq default-file-name-coding-system 'shift_jis)
+;; compile
+(setq compile-command "make ")
 ;;
 ;;-- http://memememomo.hatenablog.com/entry/2013/03/17/182626
 ;; command for byte compile
@@ -32,41 +46,68 @@
 (setq delete-auto-save-files t)
 ;; ediffを1ウィンドウで実行
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-;; diffのオプション
+;; diff
 (setq diff-switches '("-u" "-p" "-N"))
 ;; grep
 (require 'grep)
-(setq grep-command-before-query "grep -nH -r -e  *")
-(defun grep-default-command ()
-(if current-prefix-arg
-(let ((grep-command-before-target
-(concat grep-command-before-query
-(shell-quote-argument (grep-tag-default)))))
-(cons (if buffer-file-name
-(concat grep-command-before-target
-" *."
-(file-name-extension buffer-file-name))
-(concat grep-command-before-target " ."))
-(+ (length grep-command-before-target) 1)))
-(car grep-command)))
-(setq grep-command (cons (concat grep-command-before-query " .")
-(+ (length grep-command-before-query) 1)))
+(setq grep-command-before-query "grep -nH -r -e  ")
+;;(defun grep-default-command ()
+;;  (if current-prefix-arg
+;;      (let ((grep-command-before-target
+;;             (concat grep-command-before-query
+;;                     (shell-quote-argument (grep-tag-default)))))
+;;        (cons (if buffer-file-name
+;;                  (concat grep-command-before-target
+;;                          " *."
+;;                          (file-name-extension buffer-file-name))
+;;                (concat grep-command-before-target " ."))
+;;              (+ (length grep-command-before-target) 1)))
+;;    (car grep-command)))
+;;(setq grep-command (cons (concat grep-command-before-query " .")
+;;                         (+ (length grep-command-before-query) 1)))
+;;
+;;-- http://ubulog.blogspot.jp/2007/09/emacs_09.html
+;;--http://seesaawiki.jp/w/kou1okada/d/emacs%20-%20jaspace-mode
+;;jaspec...
+;;"«"/xAB, "»"/xBB, "↲", "↓"
+(require 'jaspace)
+(setq jaspace-alternate-jaspace-string "□")
+(setq jaspace-alternate-eol-string "«\n")
+;;(setq jaspace-highlight-tabs t)  ; highlight tabs
+;;(setq jaspace-highlight-tabs ?<) ; use < as a tab marker
+;;(setq jaspace-highlight-tabs ?&gt;);
+(setq jaspace-highlight-tabs "»");
+(setq jaspace-modes (append jaspace-modes ;; 各種 major mode で有効に
+                            (list
+                             'c-mode
+                             'c++-mode
+                             'd-mode
+                             'php-mode
+                             'ruby-mode
+                             'text-mode
+                             'Fundamental-mode
+                             )))
 ;;
 ;;-- http://weboo-returns.com/blog/emacs-shows-double-space-and-tab/
+;;-- http://d.hatena.ne.jp/t_ume_tky/20120906/1346943019
 ;; Show Zenkaku Char 
-(setq whitespace-style
-      '(tabs tab-mark spaces space-mark))
-(setq whitespace-space-regexp "\\(\x3000+\\)")
-(setq whitespace-display-mappings
-      '((space-mark ?\x3000 [?\□])
-        (tab-mark   ?\t   [?\xBB ?\t])
-        ))
-(require 'whitespace)
-(global-whitespace-mode 1)
-(set-face-foreground 'whitespace-space "LightSlateGray")
-(set-face-background 'whitespace-space "DarkSlateGray")
-(set-face-foreground 'whitespace-tab "LightSlateGray")
-(set-face-background 'whitespace-tab "DarkSlateGray")
+;;(setq whitespace-style
+;;      '(tabs tab-mark spaces space-mark newline newline-mark))
+;;(setq whitespace-space-regexp "\\(\x3000+\\)")
+;;(setq whitespace-display-mappings
+;;      '((space-mark ?\x3000 [?\□])
+;;        (tab-mark   ?\t   [?\xBB ?\t])
+;;;;        (newline-mark ?\n   [?$ ?\n])
+;;;;        (newline-mark ?\n   [?\xab ?\n] [?\u21B5 ?\n] [?$ ?\n])
+;;        ))
+;;(require 'whitespace)
+;;(global-whitespace-mode 1)
+;;(set-face-foreground 'whitespace-space "LightSlateGray")
+;;(set-face-background 'whitespace-space "DarkSlateGray")
+;;(set-face-foreground 'whitespace-tab "LightSlateGray")
+;;(set-face-background 'whitespace-tab "DarkSlateGray")
+;;(set-face-foreground 'whitespace-newline "LightSlateGray")
+;;(set-face-background 'whitespace-newline "DarkSlateGray")
 ;;
 ;; - See more at: http://yohshiy.blog.fc2.com/blog-entry-171.html#sthash.Gn2t1Aip.dpuf
 (setq visible-bell t)
@@ -80,7 +121,11 @@
 (global-set-key (kbd "C-h") 'delete-backward-char)
 ;; help for help
 (global-set-key (kbd "M-?") 'help-for-help)
-
+;; ctrl-backspace
+(global-set-key [C-backspace] (kbd "C-u 0 C-k"))
+;;(define-key global-map "\C-[backspace]" 'goto-line)
+;; ctrl-x l goto
+(define-key global-map "\C-xl" 'goto-line)
 ;; line number
 ;;(require 'linum)
 ;;(global-linum-mode t)
@@ -114,18 +159,15 @@
   (kill-line 0))
 ;; C-S-kに設定
 (global-set-key (kbd "C-c k") 'backward-kill-line);; メモをするための関数を定義
-
 ;; sadfafsaf sfdafafasfsa
 ;; インスタントメモ
 (defun memo ()
   (interactive)
   (let ((path "~/memo/") (filename (format-time-string "%H.%M.%S")))
     (if (file-directory-p path)
-	(switch-to-buffer (find-file (concat path "m-" filename ".md")))
+        (switch-to-buffer (find-file (concat path "m-" filename ".md")))
       (message (concat "No such directory: " path)))))
 (global-set-key (kbd "C-c m") 'memo)
-
-
 ;; -- color
 ;; http://qiita.com/kubosho_/items/17464754663936cb7895
 (require 'color-theme)
