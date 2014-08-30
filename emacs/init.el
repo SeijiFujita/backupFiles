@@ -51,20 +51,6 @@
 ;; grep
 (require 'grep)
 (setq grep-command-before-query "grep -nH -r -e  ")
-;;(defun grep-default-command ()
-;;  (if current-prefix-arg
-;;      (let ((grep-command-before-target
-;;             (concat grep-command-before-query
-;;                     (shell-quote-argument (grep-tag-default)))))
-;;        (cons (if buffer-file-name
-;;                  (concat grep-command-before-target
-;;                          " *."
-;;                          (file-name-extension buffer-file-name))
-;;                (concat grep-command-before-target " ."))
-;;              (+ (length grep-command-before-target) 1)))
-;;    (car grep-command)))
-;;(setq grep-command (cons (concat grep-command-before-query " .")
-;;                         (+ (length grep-command-before-query) 1)))
 ;;
 ;;-- http://ubulog.blogspot.jp/2007/09/emacs_09.html
 ;;--http://seesaawiki.jp/w/kou1okada/d/emacs%20-%20jaspace-mode
@@ -88,35 +74,14 @@
                              'Fundamental-mode
                              )))
 ;;
-;;-- http://weboo-returns.com/blog/emacs-shows-double-space-and-tab/
-;;-- http://d.hatena.ne.jp/t_ume_tky/20120906/1346943019
-;; Show Zenkaku Char 
-;;(setq whitespace-style
-;;      '(tabs tab-mark spaces space-mark newline newline-mark))
-;;(setq whitespace-space-regexp "\\(\x3000+\\)")
-;;(setq whitespace-display-mappings
-;;      '((space-mark ?\x3000 [?\□])
-;;        (tab-mark   ?\t   [?\xBB ?\t])
-;;;;        (newline-mark ?\n   [?$ ?\n])
-;;;;        (newline-mark ?\n   [?\xab ?\n] [?\u21B5 ?\n] [?$ ?\n])
-;;        ))
-;;(require 'whitespace)
-;;(global-whitespace-mode 1)
-;;(set-face-foreground 'whitespace-space "LightSlateGray")
-;;(set-face-background 'whitespace-space "DarkSlateGray")
-;;(set-face-foreground 'whitespace-tab "LightSlateGray")
-;;(set-face-background 'whitespace-tab "DarkSlateGray")
-;;(set-face-foreground 'whitespace-newline "LightSlateGray")
-;;(set-face-background 'whitespace-newline "DarkSlateGray")
-;;
 ;; - See more at: http://yohshiy.blog.fc2.com/blog-entry-171.html#sthash.Gn2t1Aip.dpuf
 (setq visible-bell t)
 (setq ring-bell-function 'ignore)
-
+;;
 ;; tab size
 (setq tab-width 4)
 ;;(setq default-tab-width 4)
-
+;;
 ;; back space key(^H)
 (global-set-key (kbd "C-h") 'delete-backward-char)
 ;; help for help
@@ -129,7 +94,7 @@
 ;; line number
 ;;(require 'linum)
 ;;(global-linum-mode t)
-
+;;
 ;; tool bar
 ;;(setq tool-bar-style 'text)
 ;;(setq tool-bar-style 'both-horiz)
@@ -188,10 +153,11 @@
 ;;           )))
 ;; フレーム透過設定
 (add-to-list 'default-frame-alist '(alpha . (0.95 0.95)))
+;;
 ;; dlang
 ;; http://qiita.com/tm_tn/items/1d01c4500e1ca7632140
 ;;;
-;
+;;
 (require 'compile)
 (add-to-list
  'compilation-error-regexp-alist
